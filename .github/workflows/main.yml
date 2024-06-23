@@ -33,7 +33,7 @@ jobs:
       with:
         context: .
         file: ./Dockerfile
-        tags: ${{ env.DOCKERHUB_USERNAME }}/gazebo-harmonic:22.04-py3.11:${{ github.sha }}
+        tags: ${{ env.DOCKERHUB_USERNAME }}/gazebo-harmonic-22.04-py3.11:${{ github.sha }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new
         load: true
@@ -58,5 +58,5 @@ jobs:
         file: ./Dockerfile
         push: true
         tags: |
-          ${{ env.DOCKERHUB_USERNAME }}/gazebo-harmonic:22.04-py3.11:latest
-          ${{ env.DOCKERHUB_USERNAME }}/gazebo-harmonic:22.04-py3.11:${{ github.event.release.tag_name }}
+          ${{ env.DOCKERHUB_USERNAME }}/gazebo-harmonic-22.04-py3.11:latest
+          ${{ env.DOCKERHUB_USERNAME }}/gazebo-harmonic-22.04-py3.11:${{ github.event.release.tag_name }}
