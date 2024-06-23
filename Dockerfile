@@ -85,9 +85,11 @@ FROM build AS python_wheel
 # Copy python_package into workspace
 COPY python_package /root/workspace/python_package
 WORKDIR /root/workspace
+RUN ls -la /root/workspace
 # Copy the python bindings (all files and folders) into the python_package/src dir
-RUN cp -r /root/workspace/src/lib/python/* /root/workspace/python_package/src
-# Run build
-RUN python -m build /root/workspace/python_package
+RUN cp -r /root/workspace/install/lib/python/* /root/workspace/python_package/src
+# Install build module and run build
+RUN pip install build && \
+    cd /root/workspace/python_package && python -m build .
 
 CMD ["/bin/bash"]

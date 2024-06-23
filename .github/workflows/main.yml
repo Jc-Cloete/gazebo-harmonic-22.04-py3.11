@@ -38,6 +38,21 @@ jobs:
         cache-to: type=local,dest=/tmp/.buildx-cache-new
         load: true
 
+    - name: Run container and copy python bindings
+      run: |
+        docker run -d --name gazebo-container ${{ env.DOCKERHUB_USERNAME }}/gazebo-harmonic-22.04-py3.11:${{ github.sha }} tail -f /dev/null
+        docker exec gazebo-container find /python_package/dist -name "gazebo_py_bindings-*.whl" -exec cp {} /tmp/ \;
+        docker exec gazebo-container find /python_package/dist -name "gazebo_py_bindings-*.tar.gz" -exec cp {} /tmp/ \;
+        docker cp gazebo-container:/tmp/ .
+        docker rm -f gazebo-container
+
+    - name: Upload python binding to artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: python_bindings
+        path: |
+          tmp
+
     - name: Move cache
       run: |
         rm -rf /tmp/.buildx-cache
@@ -60,3 +75,12 @@ jobs:
         tags: |
           ${{ env.DOCKERHUB_USERNAME }}/gazebo-harmonic-22.04-py3.11:latest
           ${{ env.DOCKERHUB_USERNAME }}/gazebo-harmonic-22.04-py3.11:${{ github.event.release.tag_name }}
+
+    - name: Publish PyPi package.
+      if: github.event_name == 'release'
+      env:
+        TWINE_USERNAME: __token__
+        TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
+      run: |
+        pip install twine
+        twine upload tmp/*
