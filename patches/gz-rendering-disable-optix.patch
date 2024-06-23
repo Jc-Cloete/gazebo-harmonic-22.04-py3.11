@@ -1,0 +1,10 @@
+--- CMakeLists.txt
++++ CMakeLists.txt
+@@ -1,5 +1,7 @@
+ cmake_minimum_required(VERSION 3.10.2 FATAL_ERROR)
+ 
++set(SKIP_optix TRUE)
++
+ #============================================================================
+ # Initialize the project
+ #============================================================================

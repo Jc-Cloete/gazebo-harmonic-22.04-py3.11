@@ -1,0 +1,23 @@
+--- CMakeLists.txt
++++ CMakeLists.txt
+@@ -56,15 +56,15 @@ message(STATUS "\n\n-- ====== Finding Dependencies ======")
+ # Python interfaces
+ if (SKIP_PYBIND11)
+   message(STATUS "SKIP_PYBIND11 set - disabling python bindings")
+-  find_package(Python3 COMPONENTS Interpreter)
++  find_package(Python3 3.11 REQUIRED COMPONENTS Interpreter)
+ else()
+-  find_package(Python3 COMPONENTS Interpreter Development)
++  find_package(Python3 3.11 REQUIRED COMPONENTS Interpreter Development)
+   if (NOT Python3_Development_FOUND)
+     GZ_BUILD_WARNING("Python development libraries are missing: Python interfaces are disabled.")
+   else()
+-    set(PYBIND11_PYTHON_VERSION 3)
+-    find_package(pybind11 2.4 CONFIG QUIET)
+-
++    set(PYBIND11_PYTHON_VERSION 3.11)
++    find_package(pybind11 2.12.0 REQUIRED EXACT CONFIG)
++    
+     if (pybind11_FOUND)
+       message (STATUS "Searching for pybind11 - found version ${pybind11_VERSION}.")
+     else()

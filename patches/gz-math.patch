@@ -1,0 +1,23 @@
+--- CMakeLists.txt
++++ CMakeLists.txt
+@@ -115,7 +115,7 @@
+       set(Python3_VERSION ${PYTHONLIBS_VERSION_STRING})
+     endif()
+   else()
+-    find_package(Python3 QUIET COMPONENTS Interpreter Development)
++    find_package(Python3 3.11 REQUIRED COMPONENTS Interpreter Development)
+   endif()
+ 
+   if (NOT Python3_FOUND)
+@@ -124,8 +124,9 @@
+   else()
+     message (STATUS "Searching for Python3 - found version ${Python3_VERSION}.")
+ 
+-    set(PYBIND11_PYTHON_VERSION 3)
+-    find_package(pybind11 2.2 QUIET)
++    set(PYBIND11_PYTHON_VERSION 3.11)
++    set(pybind11_DIR "/usr/local/lib/python3.11/dist-packages/pybind11/share/cmake/pybind11")
++    find_package(pybind11 2.12.0 REQUIRED EXACT CONFIG)
+ 
+     if (${pybind11_FOUND})
+       message (STATUS "Searching for pybind11 - found version ${pybind11_VERSION}.")

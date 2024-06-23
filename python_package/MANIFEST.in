@@ -1,0 +1,4 @@
+include src/gz/*.so
+include src/gz/msgs10/*.py
+include src/gz/transport13/*.so
+include src/gz/transport13/*.py
