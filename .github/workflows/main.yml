@@ -8,12 +8,13 @@ on:
   release:
     types: [created]
 
+    
 env:
   DOCKERHUB_USERNAME: jccloete
-
+      
 jobs:
   build-and-release:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
     - uses: actions/checkout@v2
 
