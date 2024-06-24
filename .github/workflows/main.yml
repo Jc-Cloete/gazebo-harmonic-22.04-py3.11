@@ -14,7 +14,7 @@ env:
       
 jobs:
   build-and-release:
-    runs-on: self-hosted
+    runs-on: ubuntu-22.04
     steps:
     - uses: actions/checkout@v2
 
@@ -46,13 +46,15 @@ jobs:
         docker exec gazebo-container find /python_package/dist -name "gazebo_py_bindings-*.tar.gz" -exec cp {} /tmp/ \;
         docker cp gazebo-container:/tmp/ .
         docker rm -f gazebo-container
+        cp gazebo_py_bindings-*.whl ./dist/
+        cp gazebo_py_bindings-*.tar.gz ./dist/
 
     - name: Upload python binding to artifacts
       uses: actions/upload-artifact@v2
       with:
         name: python_bindings
         path: |
-          tmp
+          dist/
 
     - name: Move cache
       run: |
@@ -84,4 +86,4 @@ jobs:
         TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
       run: |
         pip install twine
-        twine upload tmp/*
+        twine upload dist/*
